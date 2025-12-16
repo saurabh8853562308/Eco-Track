@@ -1,0 +1,17 @@
+[main] INFO org.eclipse.jetty.util.log - Logging initialized @162ms to org.eclipse.jetty.util.log.Slf4jLog
+WARNING: jetty-runner is deprecated.
+         See Jetty Documentation for startup options
+         https://www.eclipse.org/jetty/documentation/
+[main] INFO org.eclipse.jetty.runner.Runner - Runner
+[main] INFO org.eclipse.jetty.server.Server - jetty-9.4.50.v20221201; built: 2022-12-01T22:07:03.915Z; git: da9a0b30691a45daf90a9f17b5defa2f1434f882; jvm 23.0.2+7-58
+[main] INFO org.eclipse.jetty.annotations.AnnotationConfiguration - Scanning elapsed time=450ms
+[main] INFO org.eclipse.jetty.server.session - DefaultSessionIdManager workerName=node0
+[main] INFO org.eclipse.jetty.server.session - No SessionScavenger set, using defaults
+[main] INFO org.eclipse.jetty.server.session - node0 Scavenging every 660000ms
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started o.e.j.w.WebAppContext@3dd3bcd{/,file:///C:/Users/saura/AppData/Local/Temp/jetty-0_0_0_0-8080-ResumeAnalyzer_war-_-any-14416989501853153104/webapp/,AVAILABLE}{file:///C:/Users/saura/OneDrive/Desktop/ResumeAnalyzer/ResumeAnalyzer.war}
+[main] INFO org.eclipse.jetty.server.AbstractConnector - Started ServerConnector@1d251891{HTTP/1.1, (http/1.1)}{0.0.0.0:8080}
+[main] INFO org.eclipse.jetty.server.Server - Started @1591ms
+Dec 17, 2025 12:20:04 AM org.apache.pdfbox.pdfparser.COSParser findObjectKey
+WARNING: found wrong object number. expected [1] found [0]
+Dec 17, 2025 12:20:04 AM org.apache.pdfbox.pdfparser.COSParser validateStreamLength
+WARNING: The end of the stream doesn't point to the correct offset, using workaround to read the stream, stream start position: 343, length: 44, expected end position: 387

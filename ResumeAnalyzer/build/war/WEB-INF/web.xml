@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+
+    <!-- Minimal web.xml: rely on servlet annotations. Define welcome file. -->
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+
+    <!-- Explicit servlet mapping to ensure compatibility with all containers -->
+    <servlet>
+        <servlet-name>ResumeAnalyzerServlet</servlet-name>
+        <servlet-class>ResumeAnalyzerServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ResumeAnalyzerServlet</servlet-name>
+        <url-pattern>/analyze</url-pattern>
+    </servlet-mapping>
+
+</web-app>
