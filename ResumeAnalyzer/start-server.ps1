@@ -7,7 +7,25 @@ Push-Location $scriptDir
 
 if ($Build) {
     Write-Host "Building project before start..."
-    & powershell -NoProfile -ExecutionPolicy Bypass -File .\build.ps1
+    $mvnwCmd = Join-Path $scriptDir 'mvnw.cmd'
+    $mvnwPosix = Join-Path $scriptDir 'mvnw'
+    if (Test-Path $mvnwCmd) {
+        Write-Host "Found Maven Wrapper (Windows) - running mvnw.cmd"
+        & $mvnwCmd -U clean package
+        if ($LASTEXITCODE -ne 0) { Write-Error "Maven build failed (mvnw.cmd)"; Pop-Location; exit 1 }
+    } elseif (Test-Path $mvnwPosix) {
+        Write-Host "Found Maven Wrapper (POSIX) - running ./mvnw"
+        & $mvnwPosix -U clean package
+        if ($LASTEXITCODE -ne 0) { Write-Error "Maven build failed (./mvnw)"; Pop-Location; exit 1 }
+    } else {
+        Write-Host "Maven wrapper not found; falling back to legacy build.ps1"
+        $legacyBuild = Join-Path $scriptDir 'build.ps1'
+        if (Test-Path $legacyBuild) {
+            & powershell -NoProfile -ExecutionPolicy Bypass -File $legacyBuild
+        } else {
+            Write-Error "No build mechanism found (mvnw or build.ps1). Aborting."; Pop-Location; exit 1
+        }
+    }
 }
 
 $pidFile = Join-Path $scriptDir 'server.pid'
