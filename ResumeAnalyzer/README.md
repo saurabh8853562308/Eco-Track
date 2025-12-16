@@ -2,10 +2,10 @@
 
 Simple Java servlet that analyzes uploaded PDF resumes against a provided job description and returns a basic matching score.
 
-This repository includes:
+- This repository includes:
 
-- `src/` — Java sources (non-standard layout: kept as-is for backward compatibility)
-- `Webcontent/` — webapp static files (`index.html`, `style.css`) and `WEB-INF/web.xml`
+- `src/main/java/` — Java sources (standard Maven layout)
+- `src/main/webapp/` — webapp static files (`index.html`, `style.css`) and `WEB-INF/web.xml`
 - `pom.xml` — Maven build
 - `mvnw`, `mvnw.cmd`, `.mvn/wrapper/*` — Maven Wrapper launchers and config
 - `start-server.ps1` / `stop-server.ps1` — convenient scripts to run the Jetty runner locally
@@ -103,7 +103,7 @@ Security & scaling notes:
 
 ## Development notes
 
-- The current project uses a non-standard layout (Java sources in `src`, webapp in `Webcontent`) to match the original layout. If you prefer a standard Maven layout, I can migrate sources to `src/main/java` and web assets to `src/main/webapp`.
+- The project now uses the standard Maven layout: Java sources in `src/main/java` and web assets in `src/main/webapp`.
 - The `pom.xml` contains PDFBox as `pdfbox-app` and `slf4j-simple` as runtime binder for local runs.
 
 ## Commands summary

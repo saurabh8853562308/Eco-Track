@@ -38,16 +38,6 @@
     </dependencies>
 
     <build>
-        <!-- Use existing non-standard layout: Java sources live in `src`, webapp in `Webcontent` -->
-        <sourceDirectory>${basedir}/src</sourceDirectory>
-        <resources>
-            <resource>
-                <directory>${basedir}/src</directory>
-                <includes>
-                    <include>**/*.properties</include>
-                </includes>
-            </resource>
-        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -62,11 +52,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.3.2</version>
-                <configuration>
-                    <!-- point to your existing Webcontent directory -->
-                    <warSourceDirectory>${basedir}/Webcontent</warSourceDirectory>
-                    <!-- don't include provided-scope deps (servlet-api) -->
-                </configuration>
             </plugin>
         </plugins>
     </build>

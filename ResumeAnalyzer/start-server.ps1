@@ -26,10 +26,16 @@ if (Test-Path $pidFile) {
 
 $jar = Join-Path $scriptDir 'jetty-runner.jar'
 $slf4j = Join-Path $scriptDir 'slf4j-simple-1.7.36.jar'
-$war = Join-Path $scriptDir 'ResumeAnalyzer.war'
+# prefer a Maven-built WAR in target/ if present
+$targetWar = Get-ChildItem -Path (Join-Path $scriptDir 'target') -Filter "*.war" -ErrorAction SilentlyContinue | Select-Object -First 1
+if ($targetWar) {
+    $war = $targetWar.FullName
+} else {
+    $war = Join-Path $scriptDir 'ResumeAnalyzer.war'
+}
 
 if (-not (Test-Path $jar)) { Write-Error "jetty-runner.jar not found in $scriptDir"; Pop-Location; exit 1 }
-if (-not (Test-Path $war)) { Write-Error "ResumeAnalyzer.war not found in $scriptDir"; Pop-Location; exit 1 }
+if (-not (Test-Path $war)) { Write-Error "WAR not found (searched target/ and repo root)"; Pop-Location; exit 1 }
 
 $log = Join-Path $scriptDir 'jetty.log'
 
