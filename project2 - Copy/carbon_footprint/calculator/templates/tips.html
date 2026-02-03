@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Tips - Carbon Footprint Calculator{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>🌱 Sustainability Tips</h1>
+        <p>Actionable recommendations to reduce your carbon footprint</p>
+    </div>
+</div>
+
+<div id="tips" class="tips-section">
+    <div class="container">
+        <p class="section-subtitle">Small changes, big impact - Start your sustainability journey today</p>
+        
+        <div class="tips-grid">
+            <div class="tip-card">
+                <h3>🍽️ Food Tips</h3>
+                <ul>
+                    <li><strong>Eat less meat:</strong> Even one meatless day per week can save ~1.5 tons CO2e annually</li>
+                    <li><strong>Choose plant-based proteins:</strong> Lentils, beans, and tofu have 90% lower emissions</li>
+                    <li><strong>Buy local and seasonal:</strong> Reduces transport emissions significantly</li>
+                    <li><strong>Minimize food waste:</strong> Plan meals and store properly</li>
+                    <li><strong>Reduce dairy:</strong> Consider plant-based milk alternatives</li>
+                    <li><strong>Start composting:</strong> Divert food waste from landfills</li>
+                    <li><strong>Support sustainable farms:</strong> Look for organic and local options</li>
+                </ul>
+            </div>
+            
+            <div class="tip-card">
+                <h3>⚡ Energy Tips</h3>
+                <ul>
+                    <li><strong>Switch to LED bulbs:</strong> Use 75% less energy than incandescent</li>
+                    <li><strong>Use renewable energy:</strong> Consider solar panels or green electricity plans</li>
+                    <li><strong>Improve insulation:</strong> Seal gaps and add weatherstripping</li>
+                    <li><strong>Use smart thermostats:</strong> Can save up to 15% on heating/cooling</li>
+                    <li><strong>Unplug devices:</strong> Standby power accounts for 10% of usage</li>
+                    <li><strong>Use power strips:</strong> Control multiple devices at once</li>
+                    <li><strong>Take shorter showers:</strong> Reduce hot water usage</li>
+                </ul>
+            </div>
+            
+            <div class="tip-card">
+                <h3>🚗 Transport Tips</h3>
+                <ul>
+                    <li><strong>Use public transport:</strong> 5 times lower emissions than driving alone</li>
+                    <li><strong>Carpool or share rides:</strong> Divide emissions among passengers</li>
+                    <li><strong>Cycle or walk:</strong> Zero emissions and great health benefits</li>
+                    <li><strong>Work from home:</strong> When possible, eliminates commute emissions</li>
+                    <li><strong>Plan efficient routes:</strong> Reduces unnecessary mileage</li>
+                    <li><strong>Consider electric vehicles:</strong> 50% lower emissions over lifetime</li>
+                    <li><strong>Fly less:</strong> One transatlantic flight = month of driving</li>
+                </ul>
+            </div>
+
+            <div class="tip-card">
+                <h3>♻️ General Tips</h3>
+                <ul>
+                    <li><strong>Buy less, choose well:</strong> Reduce consumption and choose sustainable products</li>
+                    <li><strong>Recycle properly:</strong> Extend product lifecycles</li>
+                    <li><strong>Support renewable energy:</strong> Switch your utility provider if possible</li>
+                    <li><strong>Plant trees:</strong> Offset some of your emissions naturally</li>
+                    <li><strong>Spread awareness:</strong> Educate others in your community</li>
+                    <li><strong>Support climate policies:</strong> Vote for environmental action</li>
+                    <li><strong>Join communities:</strong> Connect with like-minded sustainability advocates</li>
+                </ul>
+            </div>
+
+            <div class="tip-card">
+                <h3>🏠 Home Improvements</h3>
+                <ul>
+                    <li><strong>Install solar panels:</strong> Generate clean energy for years</li>
+                    <li><strong>Upgrade appliances:</strong> Energy Star certified use 10-50% less</li>
+                    <li><strong>Add insulation:</strong> Reduces heating and cooling needs</li>
+                    <li><strong>Install water heater blanket:</strong> Easy and cheap</li>
+                    <li><strong>Fix leaks:</strong> Save water and reduce heating needs</li>
+                    <li><strong>Paint with eco-friendly paint:</strong> Lower VOC emissions</li>
+                    <li><strong>Use natural light:</strong> Open curtains during day</li>
+                </ul>
+            </div>
+
+            <div class="tip-card">
+                <h3>🛒 Shopping Wisely</h3>
+                <ul>
+                    <li><strong>Buy secondhand:</strong> Reduce manufacturing emissions</li>
+                    <li><strong>Choose minimal packaging:</strong> Less waste overall</li>
+                    <li><strong>Support eco-brands:</strong> Companies committed to sustainability</li>
+                    <li><strong>Buy durable goods:</strong> Last longer, less replacement</li>
+                    <li><strong>Avoid single-use plastics:</strong> Use reusable bags and bottles</li>
+                    <li><strong>Buy in bulk:</strong> Reduces packaging per item</li>
+                    <li><strong>Check carbon labels:</strong> Growing number on products</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.page-header {
+    background: linear-gradient(135deg, #2ecc71, #3498db);
+    color: white;
+    padding: 60px 0;
+    text-align: center;
+    margin-top: 80px;
+}
+
+.page-header h1 {
+    font-size: 42px;
+    margin-bottom: 15px;
+}
+
+.page-header p {
+    font-size: 18px;
+    opacity: 0.95;
+}
+
+@media (max-width: 768px) {
+    .page-header {
+        padding: 40px 0;
+        margin-top: 60px;
+    }
+
+    .page-header h1 {
+        font-size: 32px;
+    }
+
+    .page-header p {
+        font-size: 16px;
+    }
+}
+</style>
+{% endblock %}

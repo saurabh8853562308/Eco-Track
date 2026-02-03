@@ -1,0 +1,448 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Sign Up - Carbon Footprint Calculator{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h2>🌱 Create Account</h2>
+                <p>Join our community and track your carbon journey</p>
+            </div>
+
+            {% if messages %}
+                <div class="alert-messages">
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {% for error in form.non_field_errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <form method="post" class="auth-form">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="id_username">Username</label>
+                    <input 
+                        type="text" 
+                        id="id_username" 
+                        name="username" 
+                        class="form-control" 
+                        placeholder="Choose a unique username"
+                        required
+                    >
+                    {% if form.username.errors %}
+                        <span class="error-text">{{ form.username.errors.0 }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_email">Email Address</label>
+                    <input 
+                        type="email" 
+                        id="id_email" 
+                        name="email" 
+                        class="form-control" 
+                        placeholder="your@email.com"
+                        required
+                    >
+                    {% if form.email.errors %}
+                        <span class="error-text">{{ form.email.errors.0 }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label>Phone Number (Optional)</label>
+                    <div class="phone-input-wrapper">
+                        <select id="id_country_code" name="country_code" class="form-control country-code-select">
+                            <option value="+1">🇺🇸 +1 (USA)</option>
+                            <option value="+44">🇬🇧 +44 (UK)</option>
+                            <option value="+91">🇮🇳 +91 (India)</option>
+                            <option value="+86">🇨🇳 +86 (China)</option>
+                            <option value="+81">🇯🇵 +81 (Japan)</option>
+                            <option value="+33">🇫🇷 +33 (France)</option>
+                            <option value="+49">🇩🇪 +49 (Germany)</option>
+                            <option value="+39">🇮🇹 +39 (Italy)</option>
+                            <option value="+34">🇪🇸 +34 (Spain)</option>
+                            <option value="+31">🇳🇱 +31 (Netherlands)</option>
+                            <option value="+41">🇨🇭 +41 (Switzerland)</option>
+                            <option value="+43">🇦🇹 +43 (Austria)</option>
+                            <option value="+47">🇳🇴 +47 (Norway)</option>
+                            <option value="+46">🇸🇪 +46 (Sweden)</option>
+                            <option value="+45">🇩🇰 +45 (Denmark)</option>
+                            <option value="+358">🇫🇮 +358 (Finland)</option>
+                            <option value="+61">🇦🇺 +61 (Australia)</option>
+                            <option value="+64">🇳🇿 +64 (New Zealand)</option>
+                            <option value="+1">🇨🇦 +1 (Canada)</option>
+                            <option value="+55">🇧🇷 +55 (Brazil)</option>
+                            <option value="+27">🇿🇦 +27 (South Africa)</option>
+                            <option value="+234">🇳🇬 +234 (Nigeria)</option>
+                            <option value="+966">🇸🇦 +966 (Saudi Arabia)</option>
+                            <option value="+971">🇦🇪 +971 (UAE)</option>
+                            <option value="+65">🇸🇬 +65 (Singapore)</option>
+                            <option value="+60">🇲🇾 +60 (Malaysia)</option>
+                            <option value="+66">🇹🇭 +66 (Thailand)</option>
+                            <option value="+62">🇮🇩 +62 (Indonesia)</option>
+                            <option value="+82">🇰🇷 +82 (South Korea)</option>
+                            <option value="+84">🇻🇳 +84 (Vietnam)</option>
+                        </select>
+                        <input 
+                            type="tel" 
+                            id="id_phone" 
+                            name="phone" 
+                            class="form-control phone-number-input" 
+                            placeholder="(555) 123-4567"
+                        >
+                    </div>
+                    <small class="help-text">For notifications and support (optional)</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="id_password1">Password</label>
+                    <input 
+                        type="password" 
+                        id="id_password1" 
+                        name="password1" 
+                        class="form-control" 
+                        placeholder="Create a strong password"
+                        required
+                    >
+                    {% if form.password1.errors %}
+                        <span class="error-text">{{ form.password1.errors.0 }}</span>
+                    {% endif %}
+                    <small class="help-text">
+                        At least 8 characters, mix of letters and numbers recommended
+                    </small>
+                </div>
+
+                <div class="form-group">
+                    <label for="id_password2">Confirm Password</label>
+                    <input 
+                        type="password" 
+                        id="id_password2" 
+                        name="password2" 
+                        class="form-control" 
+                        placeholder="Confirm your password"
+                        required
+                    >
+                    {% if form.password2.errors %}
+                        <span class="error-text">{{ form.password2.errors.0 }}</span>
+                    {% endif %}
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">
+                    Create Account
+                </button>
+            </form>
+
+            <div class="auth-divider">or</div>
+
+            <div class="auth-alternative">
+                <p>Already have an account?</p>
+                <a href="{% url 'calculator:login' %}" class="btn btn-block signin-btn">
+                    Sign In
+                </a>
+            </div>
+
+            <div class="auth-footer">
+                <a href="{% url 'calculator:index' %}" class="link">← Back to Home</a>
+            </div>
+        </div>
+
+        <div class="auth-benefits">
+            <h3>🎯 Why Join Us?</h3>
+            <ul>
+                <li>✅ <strong>Track Progress</strong> - Monitor your carbon footprint over time</li>
+                <li>✅ <strong>Get Insights</strong> - Personalized recommendations based on your data</li>
+                <li>✅ <strong>Set Goals</strong> - Define and achieve carbon reduction targets</li>
+                <li>✅ <strong>See Impact</strong> - Visualize your sustainability journey</li>
+                <li>✅ <strong>Compare</strong> - See how you compare with the community</li>
+                <li>✅ <strong>Export Reports</strong> - Download your carbon footprint reports</li>
+            </ul>
+
+
+        </div>
+    </div>
+</div>
+
+<style>
+.auth-container {
+    background: linear-gradient(135deg, rgba(46, 204, 113, 0.1), rgba(52, 152, 219, 0.1));
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    margin-top: 80px;
+}
+
+.auth-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    max-width: 900px;
+    width: 100%;
+}
+
+.auth-card {
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.auth-header h2 {
+    font-size: 32px;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.auth-header p {
+    color: #7f8c8d;
+    font-size: 14px;
+}
+
+.auth-form {
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #34495e;
+    font-size: 14px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #2ecc71;
+    box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.1);
+}
+
+.help-text {
+    display: block;
+    color: #7f8c8d;
+    font-size: 12px;
+    margin-top: 5px;
+    font-style: italic;
+}
+
+.error-text {
+    display: block;
+    color: #e74c3c;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-weight: normal;
+    color: #34495e;
+    font-size: 14px;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.alert-messages {
+    margin-bottom: 20px;
+}
+
+.alert {
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border-left: 4px solid;
+}
+
+.alert-danger {
+    background: #fadbd8;
+    color: #c0392b;
+    border-left-color: #e74c3c;
+}
+
+.alert-success {
+    background: #d5f4e6;
+    color: #27ae60;
+    border-left-color: #2ecc71;
+}
+
+.btn-block {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.auth-divider {
+    text-align: center;
+    margin: 30px 0;
+    color: #bdc3c7;
+    font-size: 14px;
+    position: relative;
+}
+
+.auth-divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #ecf0f1;
+}
+
+.auth-divider {
+    background: white;
+    padding: 0 10px;
+    width: fit-content;
+    margin: 30px auto;
+}
+
+.auth-alternative {
+    text-align: center;
+}
+
+.auth-alternative p {
+    color: #7f8c8d;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.auth-footer {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.link {
+    color: #3498db;
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.link:hover {
+    color: #2980b9;
+    text-decoration: underline;
+}
+
+.auth-benefits {
+    background: linear-gradient(135deg, #f8f9fa, white);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.auth-benefits h3 {
+    font-size: 24px;
+    color: #2c3e50;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.auth-benefits ul {
+    list-style: none;
+    margin-bottom: 30px;
+}
+
+.auth-benefits li {
+    padding: 12px 0;
+    color: #34495e;
+    font-size: 15px;
+    border-bottom: 1px solid #ecf0f1;
+    line-height: 1.6;
+}
+
+.auth-benefits li:last-child {
+    border-bottom: none;
+}
+
+.stats-box {
+    background: linear-gradient(135deg, #2ecc71, #3498db);
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.stats-box h4 {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.stats-box p {
+    margin: 8px 0;
+    font-size: 14px;
+}
+
+@media (max-width: 768px) {
+    .auth-wrapper {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .auth-card {
+        padding: 30px;
+    }
+
+    .auth-benefits {
+        padding: 30px;
+    }
+
+    .auth-header h2 {
+        font-size: 24px;
+    }
+
+    .auth-container {
+        margin-top: 60px;
+    }
+
+    .signin-btn {
+        background-color: #e74c3c !important;
+        color: white !important;
+        border: none !important;
+    }
+
+    .signin-btn:hover {
+        background-color: #c0392b !important;
+    }
+}
+</style>
+{% endblock %}

@@ -1,0 +1,275 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Carbon Footprint Calculator - Home{% endblock %}
+
+{% block content %}
+<div id="home" class="hero-section">
+    <div class="container">
+        <div class="hero-content">
+            <h2>Welcome to Your Carbon Journey</h2>
+            <p class="hero-subtitle">Most of us feel disconnected from the big picture of climate change. This calculator helps you easily measure your personal carbon footprint and gives you personalized tips to reduce your impact.</p>
+            <button class="btn btn-primary btn-large" onclick="scrollToCalculator()">Start Your Journey</button>
+        </div>
+    </div>
+</div>
+
+<div class="info-section">
+    <div class="container">
+        <h2>Why Track Your Carbon Footprint?</h2>
+        <div class="info-grid">
+            <div class="info-card">
+                <div class="card-icon">📊</div>
+                <h3>Measure Impact</h3>
+                <p>Understand how your daily choices contribute to climate change with our simple calculator.</p>
+            </div>
+            <div class="info-card">
+                <div class="card-icon">💡</div>
+                <h3>Get Personalized Tips</h3>
+                <p>Receive tailored recommendations to reduce your carbon footprint effectively.</p>
+            </div>
+            <div class="info-card">
+                <div class="card-icon">📈</div>
+                <h3>Track Progress</h3>
+                <p>Monitor your improvements over time and celebrate sustainable lifestyle changes.</p>
+            </div>
+            <div class="info-card">
+                <div class="card-icon">🌱</div>
+                <h3>Build Habits</h3>
+                <p>Transform confusion into clear, rewarding actions towards a sustainable future.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="calculator" class="calculator-section">
+    <div class="container">
+        <h2>Calculate Your Carbon Footprint</h2>
+        <p class="section-subtitle">Fill in your monthly consumption data to get your personalized carbon footprint</p>
+        
+        <div class="calculator-container">
+            <!-- Food Section -->
+            <div class="calculator-panel">
+                <div class="panel-header">
+                    <h3>🍽️ Food Consumption</h3>
+                    <p class="panel-subtitle">Monthly consumption in kilograms</p>
+                </div>
+                <div class="input-group">
+                    <label for="beef"> Beef Consumption (kg/month)</label>
+                    <input type="number" id="beef" class="input-field" min="0" step="0.5" value="0" placeholder="e.g., 2.5">
+                    <small class="help-text">Beef is the highest emission food (27 kg CO2e per kg)</small>
+                </div>
+                <div class="input-group">
+                    <label for="chicken">Chicken Consumption (kg/month)</label>
+                    <input type="number" id="chicken" class="input-field" min="0" step="0.5" value="0" placeholder="e.g., 4">
+                    <small class="help-text">Moderate emissions compared to beef (6.9 kg CO2e per kg)</small>
+                </div>
+                <div class="input-group">
+                    <label for="fish">Fish Consumption (kg/month)</label>
+                    <input type="number" id="fish" class="input-field" min="0" step="0.5" value="0" placeholder="e.g., 2">
+                    <small class="help-text">Lower emissions than red meat (5 kg CO2e per kg)</small>
+                </div>
+                <div class="input-group">
+                    <label for="vegetable">Vegetables & Fruits (kg/month)</label>
+                    <input type="number" id="vegetable" class="input-field" min="0" step="0.5" value="0" placeholder="e.g., 10">
+                    <small class="help-text">Lowest emission food (2 kg CO2e per kg)</small>
+                </div>
+            </div>
+
+            <!-- Energy Section -->
+            <div class="calculator-panel">
+                <div class="panel-header">
+                    <h3>⚡ Energy Consumption</h3>
+                    <p class="panel-subtitle">Monthly usage</p>
+                </div>
+                <div class="input-group">
+                    <label for="electricity">Electricity Usage (kWh/month)</label>
+                    <input type="number" id="electricity" class="input-field" min="0" step="10" value="0" placeholder="e.g., 150">
+                    <small class="help-text">Check your electricity bill for exact usage (0.92 kg CO2e per kWh)</small>
+                </div>
+                <div class="input-group">
+                    <label for="natural_gas">Natural Gas Usage (m³/month)</label>
+                    <input type="number" id="natural_gas" class="input-field" min="0" step="0.5" value="0" placeholder="e.g., 10">
+                    <small class="help-text">For heating and cooking (2.04 kg CO2e per m³)</small>
+                </div>
+            </div>
+
+            <!-- Transport Section (Optional) -->
+            <div class="calculator-panel">
+                <div class="panel-header">
+                    <h3>🚗 Transport (Optional)</h3>
+                    <p class="panel-subtitle">Monthly distance traveled</p>
+                </div>
+                <div class="input-group">
+                    <label for="car_miles">Car Travel (miles/month)</label>
+                    <input type="number" id="car_miles" class="input-field" min="0" step="10" value="0" placeholder="e.g., 500">
+                    <small class="help-text">Personal car usage (0.411 kg CO2e per mile)</small>
+                </div>
+                <div class="input-group">
+                    <label for="public_transport_miles">Public Transport (miles/month)</label>
+                    <input type="number" id="public_transport_miles" class="input-field" min="0" step="10" value="0" placeholder="e.g., 200">
+                    <small class="help-text">Bus, train, metro usage (0.089 kg CO2e per mile)</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Calculate Button -->
+        <div class="button-container">
+            <button class="btn btn-primary btn-large" onclick="calculateFootprint()">Calculate My Footprint</button>
+            <button class="btn btn-secondary" onclick="resetForm()">Reset Form</button>
+        </div>
+    </div>
+</div>
+
+<!-- Results Section -->
+<div id="results-section" class="results-section" style="display: none;">
+    <div class="container">
+        <h2>Your Carbon Footprint Results</h2>
+        
+        <div class="results-summary">
+            <div class="result-card result-primary">
+                <div class="result-icon">🌍</div>
+                <div class="result-content">
+                    <h3>Monthly Carbon Footprint</h3>
+                    <p class="result-value" id="monthly-carbon">0</p>
+                    <p class="result-unit">kg CO₂e</p>
+                </div>
+            </div>
+            <div class="result-card">
+                <div class="result-icon">📅</div>
+                <div class="result-content">
+                    <h3>Annual Carbon Footprint</h3>
+                    <p class="result-value" id="annual-carbon">0</p>
+                    <p class="result-unit">kg CO₂e</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="breakdown-section">
+            <h3>Breakdown by Category</h3>
+            <div class="breakdown-grid">
+                <div class="breakdown-card">
+                    <h4>🍽️ Food</h4>
+                    <p class="breakdown-value" id="food-carbon">0</p>
+                    <p class="breakdown-unit">kg CO₂e/month</p>
+                </div>
+                <div class="breakdown-card">
+                    <h4>⚡ Energy</h4>
+                    <p class="breakdown-value" id="energy-carbon">0</p>
+                    <p class="breakdown-unit">kg CO₂e/month</p>
+                </div>
+                <div class="breakdown-card">
+                    <h4>🚗 Transport</h4>
+                    <p class="breakdown-value" id="transport-carbon">0</p>
+                    <p class="breakdown-unit">kg CO₂e/month</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chart -->
+        <div class="chart-container">
+            <canvas id="footprintChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- Tips Section -->
+<div id="tips" class="tips-section">
+    <div class="container">
+        <h2>🌱 Actionable Tips to Reduce Your Carbon Footprint</h2>
+        <p class="section-subtitle">Small changes, big impact</p>
+        
+        <div class="tips-grid">
+            <div class="tip-card">
+                <h3>🍽️ Food Tips</h3>
+                <ul>
+                    <li><strong>Eat less meat:</strong> Even one meatless day per week can save ~1.5 tons CO2e annually</li>
+                    <li><strong>Choose plant-based proteins:</strong> Lentils, beans, and tofu have 90% lower emissions</li>
+                    <li><strong>Buy local and seasonal:</strong> Reduces transport emissions significantly</li>
+                    <li><strong>Minimize food waste:</strong> Plan meals and store properly</li>
+                    <li><strong>Reduce dairy:</strong> Consider plant-based milk alternatives</li>
+                </ul>
+            </div>
+            
+            <div class="tip-card">
+                <h3>⚡ Energy Tips</h3>
+                <ul>
+                    <li><strong>Switch to LED bulbs:</strong> Use 75% less energy than incandescent</li>
+                    <li><strong>Use renewable energy:</strong> Consider solar panels or green electricity plans</li>
+                    <li><strong>Improve insulation:</strong> Seal gaps and add weatherstripping</li>
+                    <li><strong>Use smart thermostats:</strong> Can save up to 15% on heating/cooling</li>
+                    <li><strong>Unplug devices:</strong> Standby power accounts for 10% of usage</li>
+                </ul>
+            </div>
+            
+            <div class="tip-card">
+                <h3>🚗 Transport Tips</h3>
+                <ul>
+                    <li><strong>Use public transport:</strong> 5 times lower emissions than driving alone</li>
+                    <li><strong>Carpool or share rides:</strong> Divide emissions among passengers</li>
+                    <li><strong>Cycle or walk:</strong> Zero emissions and great health benefits</li>
+                    <li><strong>Work from home:</strong> When possible, eliminates commute emissions</li>
+                    <li><strong>Plan efficient routes:</strong> Reduces unnecessary mileage</li>
+                </ul>
+            </div>
+
+            <div class="tip-card">
+                <h3>♻️ General Tips</h3>
+                <ul>
+                    <li><strong>Buy less, choose well:</strong> Reduce consumption and choose sustainable products</li>
+                    <li><strong>Recycle properly:</strong> Extend product lifecycles</li>
+                    <li><strong>Support renewable energy:</strong> Switch your utility provider if possible</li>
+                    <li><strong>Plant trees:</strong> Offset some of your emissions naturally</li>
+                    <li><strong>Spread awareness:</strong> Educate others in your community</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- About Section -->
+<div id="about" class="about-section">
+    <div class="container">
+        <h2>About This Calculator</h2>
+        <div class="about-content">
+            <p>Our Carbon Footprint Calculator is designed for people in Ghaziabad and beyond who feel disconnected from climate change but want to make a difference. This tool provides:</p>
+            <ul>
+                <li>✅ Easy measurement of personal carbon emissions</li>
+                <li>✅ Breakdown of emissions by food, energy, and transport</li>
+                <li>✅ Personalized recommendations based on your lifestyle</li>
+                <li>✅ Simple, actionable steps you can implement immediately</li>
+                <li>✅ Progress tracking to see your impact over time</li>
+            </ul>
+            <p><strong>Scientific Basis:</strong> Our calculations use standard emission factors from reputable sources including IPCC (Intergovernmental Panel on Climate Change) guidelines.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js Library -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Smooth scroll to calculator
+    function scrollToCalculator() {
+        document.getElementById('calculator').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Smooth scroll for navigation links
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (href.startsWith('#')) {
+                e.preventDefault();
+                const target = document.querySelector(href);
+                if (target) {
+                    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

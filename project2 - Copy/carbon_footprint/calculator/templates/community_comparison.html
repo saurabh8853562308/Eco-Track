@@ -1,0 +1,488 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Community Comparison - Carbon Footprint Calculator{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>🌍 Community Comparison</h1>
+        <p>See how your carbon footprint compares with other users</p>
+    </div>
+</div>
+
+<div class="comparison-section">
+    <div class="container">
+        <!-- User's Ranking Card -->
+        {% if current_user_stats %}
+        <div class="user-ranking-card">
+            <div class="ranking-header">
+                <h2>Your Ranking</h2>
+            </div>
+            <div class="ranking-content">
+                <div class="ranking-badge">
+                    <span class="rank-number">{{ current_user_rank }}</span>
+                    <span class="rank-label">out of {{ total_users }} users</span>
+                </div>
+                <div class="ranking-stats">
+                    <div class="stat-item">
+                        <h3>Average Carbon Footprint</h3>
+                        <p class="stat-value">{{ current_user_stats.avg_carbon }} kg CO₂e/month</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>Latest Carbon Footprint</h3>
+                        <p class="stat-value">{{ current_user_stats.latest_carbon }} kg CO₂e/month</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>Total Calculations</h3>
+                        <p class="stat-value">{{ current_user_stats.footprint_count }}</p>
+                    </div>
+                </div>
+                {% if current_user_rank <= 10 %}
+                <div class="achievement">
+                    <span class="achievement-icon">🏆</span>
+                    <p>You're in the top 10 most eco-friendly users!</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Community Stats -->
+        <div class="community-stats-section">
+            <h2>Community Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>👥 Total Users</h3>
+                    <p class="stat-number">{{ total_users }}</p>
+                </div>
+                <div class="stat-card">
+                    <h3>📊 Community Average</h3>
+                    <p class="stat-number">{{ average_community_carbon }} kg CO₂e/month</p>
+                </div>
+                {% if lowest_carbon_user %}
+                <div class="stat-card best">
+                    <h3>🌱 Most Eco-Friendly</h3>
+                    <p class="stat-username">{{ lowest_carbon_user.user.username }}</p>
+                    <p class="stat-value">{{ lowest_carbon_user.avg_carbon }} kg CO₂e/month</p>
+                </div>
+                {% endif %}
+                {% if highest_carbon_user %}
+                <div class="stat-card">
+                    <h3>🔴 Highest Carbon</h3>
+                    <p class="stat-username">{{ highest_carbon_user.user.username }}</p>
+                    <p class="stat-value">{{ highest_carbon_user.avg_carbon }} kg CO₂e/month</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Top 10 Users Leaderboard -->
+        {% if top_users %}
+        <div class="leaderboard-section">
+            <h2>🏅 Top 10 Most Eco-Friendly Users</h2>
+            <div class="leaderboard">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>User</th>
+                            <th>Average Carbon Footprint</th>
+                            <th>Calculations</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user_stat in top_users %}
+                        <tr {% if user_stat.user == request.user %}class="highlight-row"{% endif %}>
+                            <td class="rank-cell">
+                                {% if forloop.counter == 1 %}
+                                    <span class="medal">🥇</span>
+                                {% elif forloop.counter == 2 %}
+                                    <span class="medal">🥈</span>
+                                {% elif forloop.counter == 3 %}
+                                    <span class="medal">🥉</span>
+                                {% else %}
+                                    #{{ forloop.counter }}
+                                {% endif %}
+                            </td>
+                            <td class="username-cell">
+                                {% if user_stat.user == request.user %}
+                                    <strong>{{ user_stat.user.username }} (You)</strong>
+                                {% else %}
+                                    {{ user_stat.user.username }}
+                                {% endif %}
+                            </td>
+                            <td class="carbon-cell">{{ user_stat.avg_carbon }} kg CO₂e/month</td>
+                            <td class="count-cell">{{ user_stat.footprint_count }}</td>
+                            <td class="status-cell">
+                                {% if user_stat.avg_carbon < average_community_carbon %}
+                                    <span class="badge green">Below Average ✓</span>
+                                {% else %}
+                                    <span class="badge orange">Above Average</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Full Leaderboard -->
+        <div class="full-leaderboard-section">
+            <h2>📋 Full User Leaderboard</h2>
+            <p class="section-subtitle">See where every user ranks in the community</p>
+            <div class="leaderboard">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>User</th>
+                            <th>Average Carbon Footprint</th>
+                            <th>Calculations</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user_stat in all_user_stats %}
+                        <tr {% if user_stat.user == request.user %}class="highlight-row"{% endif %}>
+                            <td class="rank-cell">#{{ forloop.counter }}</td>
+                            <td class="username-cell">
+                                {% if user_stat.user == request.user %}
+                                    <strong>{{ user_stat.user.username }} (You)</strong>
+                                {% else %}
+                                    {{ user_stat.user.username }}
+                                {% endif %}
+                            </td>
+                            <td class="carbon-cell">{{ user_stat.avg_carbon }} kg CO₂e/month</td>
+                            <td class="count-cell">{{ user_stat.footprint_count }}</td>
+                            <td class="status-cell">
+                                {% if user_stat.avg_carbon < average_community_carbon %}
+                                    <span class="badge green">Below Average ✓</span>
+                                {% else %}
+                                    <span class="badge orange">Above Average</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Back Button -->
+        <div class="back-link" style="text-align: center; margin-top: 40px;">
+            <a href="{% url 'calculator:calculator' %}" class="btn btn-primary">← Back to Calculator</a>
+        </div>
+    </div>
+</div>
+
+<style>
+.page-header {
+    background: linear-gradient(135deg, #2ecc71, #3498db);
+    color: white;
+    padding: 60px 0;
+    text-align: center;
+    margin-top: 80px;
+}
+
+.page-header h1 {
+    font-size: 42px;
+    margin-bottom: 15px;
+}
+
+.page-header p {
+    font-size: 18px;
+    opacity: 0.95;
+}
+
+.comparison-section {
+    padding: 60px 0;
+    background-color: white;
+}
+
+.user-ranking-card {
+    background: linear-gradient(135deg, #2ecc71, #3498db);
+    color: white;
+    padding: 40px;
+    border-radius: 12px;
+    margin-bottom: 60px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.ranking-header h2 {
+    font-size: 32px;
+    margin-bottom: 30px;
+    color: white;
+}
+
+.ranking-content {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 40px;
+    align-items: center;
+}
+
+.ranking-badge {
+    text-align: center;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 30px;
+    border-radius: 12px;
+}
+
+.rank-number {
+    display: block;
+    font-size: 80px;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 10px;
+}
+
+.rank-label {
+    display: block;
+    font-size: 16px;
+    opacity: 0.9;
+}
+
+.ranking-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.stat-item h3 {
+    font-size: 14px;
+    opacity: 0.9;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.stat-value {
+    font-size: 28px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.achievement {
+    grid-column: 1 / -1;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.achievement-icon {
+    font-size: 32px;
+    margin-right: 10px;
+}
+
+.community-stats-section {
+    margin-bottom: 60px;
+}
+
+.community-stats-section h2 {
+    font-size: 32px;
+    margin-bottom: 30px;
+    color: #2c3e50;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.stat-card {
+    background: #f8f9fa;
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+    border-left: 4px solid #3498db;
+}
+
+.stat-card.best {
+    border-left-color: #2ecc71;
+    background: linear-gradient(135deg, rgba(46, 204, 113, 0.1), rgba(46, 204, 113, 0.05));
+}
+
+.stat-card h3 {
+    font-size: 16px;
+    color: #7f8c8d;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.stat-number {
+    font-size: 36px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin: 0;
+}
+
+.stat-username {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 10px 0 5px 0;
+}
+
+.leaderboard-section {
+    margin-bottom: 60px;
+}
+
+.leaderboard-section h2 {
+    font-size: 28px;
+    margin-bottom: 30px;
+    color: #2c3e50;
+}
+
+.section-subtitle {
+    color: #7f8c8d;
+    margin-bottom: 30px;
+    font-size: 16px;
+}
+
+.full-leaderboard-section {
+    margin-top: 60px;
+}
+
+.full-leaderboard-section h2 {
+    font-size: 28px;
+    margin-bottom: 30px;
+    color: #2c3e50;
+}
+
+.leaderboard {
+    overflow-x: auto;
+}
+
+.leaderboard table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.leaderboard th {
+    background: #2c3e50;
+    color: white;
+    padding: 20px;
+    text-align: left;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 1px;
+}
+
+.leaderboard td {
+    padding: 18px 20px;
+    border-bottom: 1px solid #ecf0f1;
+    color: #34495e;
+}
+
+.leaderboard tr:last-child td {
+    border-bottom: none;
+}
+
+.leaderboard tr:hover {
+    background: #f8f9fa;
+}
+
+.leaderboard tr.highlight-row {
+    background: linear-gradient(135deg, rgba(46, 204, 113, 0.15), rgba(52, 152, 219, 0.1));
+    font-weight: 600;
+}
+
+.leaderboard tr.highlight-row td {
+    color: #2c3e50;
+}
+
+.rank-cell {
+    font-weight: 700;
+    font-size: 16px;
+    text-align: center;
+    width: 80px;
+}
+
+.medal {
+    font-size: 24px;
+}
+
+.username-cell {
+    font-weight: 600;
+}
+
+.carbon-cell {
+    color: #e74c3c;
+    font-weight: 600;
+}
+
+.count-cell {
+    text-align: center;
+}
+
+.status-cell {
+    text-align: center;
+}
+
+.badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.badge.green {
+    background: #d5f4e6;
+    color: #27ae60;
+}
+
+.badge.orange {
+    background: #fdebd0;
+    color: #d68910;
+}
+
+@media (max-width: 768px) {
+    .page-header {
+        padding: 40px 0;
+        margin-top: 60px;
+    }
+
+    .page-header h1 {
+        font-size: 32px;
+    }
+
+    .ranking-content {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .ranking-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .leaderboard {
+        font-size: 14px;
+    }
+
+    .leaderboard th,
+    .leaderboard td {
+        padding: 12px;
+    }
+
+    .rank-cell {
+        width: auto;
+    }
+}
+</style>
+{% endblock %}

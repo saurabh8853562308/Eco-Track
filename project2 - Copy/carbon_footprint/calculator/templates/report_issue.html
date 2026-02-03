@@ -1,0 +1,387 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Report Issue - Carbon Footprint Calculator{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>🐛 Report an Issue</h1>
+        <p>Help us improve by reporting bugs and issues</p>
+    </div>
+</div>
+
+<div class="report-section">
+    <div class="container">
+        <div class="report-container">
+            <div class="report-card">
+                <h2>Tell Us What's Wrong</h2>
+                <p class="intro-text">We value your feedback! Please describe any issues or bugs you encounter so we can fix them quickly.</p>
+
+                {% if messages %}
+                    <div class="alert-messages">
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <form method="post" class="report-form">
+                    {% csrf_token %}
+                    
+                    <div class="form-group">
+                        <label for="id_name">Your Name</label>
+                        <input 
+                            type="text" 
+                            id="id_name" 
+                            name="name" 
+                            class="form-control" 
+                            placeholder="Your full name"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_email">Email Address</label>
+                        <input 
+                            type="email" 
+                            id="id_email" 
+                            name="email" 
+                            class="form-control" 
+                            placeholder="your@email.com"
+                            {% if user.is_authenticated %}value="{{ user.email }}"{% endif %}
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_issue_type">Issue Type</label>
+                        <select id="id_issue_type" name="issue_type" class="form-control" required>
+                            <option value="">Select an issue type</option>
+                            <option value="bug">🐛 Bug Report</option>
+                            <option value="feature">✨ Feature Request</option>
+                            <option value="performance">⚡ Performance Issue</option>
+                            <option value="ui">🎨 UI/UX Issue</option>
+                            <option value="calculation">📊 Calculation Error</option>
+                            <option value="other">📝 Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_page">Page or Section Affected</label>
+                        <select id="id_page" name="page" class="form-control" required>
+                            <option value="">Select a page</option>
+                            <option value="home">Home Page</option>
+                            <option value="calculator">Calculator</option>
+                            <option value="tips">Tips Page</option>
+                            <option value="about">About Page</option>
+                            <option value="comparison">Community Comparison</option>
+                            <option value="login">Login/Signup</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_subject">Subject</label>
+                        <input 
+                            type="text" 
+                            id="id_subject" 
+                            name="subject" 
+                            class="form-control" 
+                            placeholder="Brief description of the issue"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_description">Detailed Description</label>
+                        <textarea 
+                            id="id_description" 
+                            name="description" 
+                            class="form-control" 
+                            placeholder="Please provide as much detail as possible about the issue, including steps to reproduce if applicable"
+                            rows="8"
+                            required
+                        ></textarea>
+                        <small class="help-text">Include browser info, device type, and exact steps to reproduce the issue</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="follow_up" checked>
+                            I'd like to be notified when this issue is resolved
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-large btn-block">
+                        Submit Report
+                    </button>
+                </form>
+            </div>
+
+            <div class="report-info">
+                <h3>📋 Why Report Issues?</h3>
+                <ul class="info-list">
+                    <li><strong>Help Us Improve:</strong> Your feedback helps us identify and fix bugs faster</li>
+                    <li><strong>Better Experience:</strong> Issues you report directly improve the app for everyone</li>
+                    <li><strong>Community:</strong> You're helping build a better tool for the entire carbon tracking community</li>
+                    <li><strong>Quick Response:</strong> We prioritize critical bugs and respond quickly</li>
+                </ul>
+
+                <h3>💡 Tips for Good Reports</h3>
+                <ul class="tips-list">
+                    <li>Be specific and detailed</li>
+                    <li>Include steps to reproduce the issue</li>
+                    <li>Mention your browser and device</li>
+                    <li>Attach screenshots if helpful</li>
+                    <li>Describe what you expected vs. what happened</li>
+                </ul>
+
+                <div class="contact-box">
+                    <h3>📧 Or Contact Us Directly</h3>
+                    <p>Email: <strong>support@carbonfootprint.in</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.page-header {
+    background: linear-gradient(135deg, #2ecc71, #3498db);
+    color: white;
+    padding: 60px 0;
+    text-align: center;
+    margin-top: 80px;
+}
+
+.page-header h1 {
+    font-size: 42px;
+    margin-bottom: 15px;
+}
+
+.page-header p {
+    font-size: 18px;
+    opacity: 0.95;
+}
+
+.report-section {
+    padding: 60px 0;
+    background-color: #f8f9fa;
+}
+
+.report-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 40px;
+    align-items: start;
+}
+
+.report-card {
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.report-card h2 {
+    font-size: 28px;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.intro-text {
+    color: #7f8c8d;
+    margin-bottom: 30px;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.report-form {
+    margin-top: 30px;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 14px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #ecf0f1;
+    border-radius: 6px;
+    font-size: 15px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #2ecc71;
+    box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.1);
+}
+
+.form-control option {
+    padding: 10px;
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 150px;
+}
+
+.help-text {
+    display: block;
+    margin-top: 8px;
+    color: #7f8c8d;
+    font-size: 13px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-weight: 500;
+    color: #34495e;
+}
+
+.checkbox-label input {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.btn-block {
+    width: 100%;
+    display: block;
+}
+
+.report-info {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    height: fit-content;
+    position: sticky;
+    top: 100px;
+}
+
+.report-info h3 {
+    font-size: 18px;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    margin-top: 0;
+}
+
+.info-list, .tips-list {
+    list-style: none;
+    margin-bottom: 30px;
+}
+
+.info-list li, .tips-list li {
+    margin-bottom: 12px;
+    padding-left: 25px;
+    position: relative;
+    color: #34495e;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.info-list li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: #2ecc71;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.tips-list li:before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: #3498db;
+    font-weight: bold;
+}
+
+.contact-box {
+    background: linear-gradient(135deg, rgba(46, 204, 113, 0.1), rgba(52, 152, 219, 0.1));
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid #2ecc71;
+}
+
+.contact-box h3 {
+    margin-top: 0;
+}
+
+.contact-box p {
+    color: #34495e;
+    margin: 0;
+    font-size: 15px;
+}
+
+.alert-messages {
+    margin-bottom: 30px;
+}
+
+.alert {
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+.alert-success {
+    background-color: #d5f4e6;
+    color: #27ae60;
+    border-left: 4px solid #27ae60;
+}
+
+.alert-error {
+    background-color: #fadbd8;
+    color: #c0392b;
+    border-left: 4px solid #c0392b;
+}
+
+@media (max-width: 968px) {
+    .report-container {
+        grid-template-columns: 1fr;
+    }
+
+    .report-info {
+        position: static;
+    }
+}
+
+@media (max-width: 768px) {
+    .page-header {
+        padding: 40px 0;
+        margin-top: 60px;
+    }
+
+    .page-header h1 {
+        font-size: 32px;
+    }
+
+    .report-card {
+        padding: 25px;
+    }
+
+    .report-info {
+        padding: 20px;
+    }
+}
+</style>
+{% endblock %}

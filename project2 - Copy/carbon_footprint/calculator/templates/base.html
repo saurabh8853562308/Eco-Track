@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Carbon Footprint Calculator{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>🌍 ECO TRACK</h1>
+                    <p class="tagline">Track Your Impact, Reduce Your Carbon</p>
+                </div>
+                <nav class="nav">
+                    <ul>
+                        <li><a href="{% url 'calculator:home' %}" class="nav-link">Home</a></li>
+                        {% if user.is_authenticated %}
+                            {% if user.profile.role == 'company_member' %}
+                                <!-- Company Member Navigation -->
+                                <li><a href="{% url 'calculator:company_dashboard' %}" class="nav-link dashboard-link">📊 Dashboard</a></li>
+                            {% else %}
+                                <!-- Customer Navigation -->
+                                <li><a href="{% url 'calculator:calculator' %}" class="nav-link">Calculator</a></li>
+                                <li><a href="{% url 'calculator:tips' %}" class="nav-link">Tips</a></li>
+                                <li><a href="{% url 'calculator:comparison' %}" class="nav-link">Community</a></li>
+                            {% endif %}
+                        {% else %}
+                            <li><a href="{% url 'calculator:calculator' %}" class="nav-link">Calculator</a></li>
+                            <li><a href="{% url 'calculator:tips' %}" class="nav-link">Tips</a></li>
+                        {% endif %}
+                        <li><a href="{% url 'calculator:about' %}" class="nav-link">About</a></li>
+                        <li><a href="{% url 'calculator:report_issue' %}" class="nav-link report-link" title="Report an issue">🐛 Report Issue</a></li>
+                        {% if user.is_authenticated %}
+                            <li>
+                                <div class="user-menu">
+                                    <span class="user-info">👤 {{ user.username }}</span>
+                                    <small class="role-badge">
+                                        {% if user.profile.role == 'company_member' %}
+                                            Company Member
+                                        {% else %}
+                                            Customer
+                                        {% endif %}
+                                    </small>
+                                </div>
+                            </li>
+                            <li><a href="{% url 'calculator:logout' %}" class="nav-link logout-link">🚪 Logout</a></li>
+                        {% else %}
+                            <li><a href="{% url 'calculator:login' %}" class="nav-link auth-link">🔐 Login</a></li>
+                            <li><a href="{% url 'calculator:signup' %}" class="nav-link auth-link signup-link">📝 Sign Up</a></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About Us</h3>
+                    <p>We help individuals and beyond understand and reduce their carbon footprint for a sustainable future.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="{% url 'calculator:calculator' %}">Calculator</a></li>
+                        <li><a href="{% url 'calculator:tips' %}">Sustainability Tips</a></li>
+                        <li><a href="{% url 'calculator:about' %}">About Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p>Email: info@carbonfootprint.in</p>
+                    <p>Location: Ghaziabad, India</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Carbon Footprint Calculator. All rights reserved. | <a href="#privacy">Privacy Policy</a> | <a href="#terms">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+    {% load static %}
+    <script src="{% static 'js/calculator.js' %}"></script>
+    <script src="{% static 'js/nav.js' %}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

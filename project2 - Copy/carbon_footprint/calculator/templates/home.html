@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Home - Carbon Footprint Calculator{% endblock %}
+
+{% block content %}
+<div id="home" class="hero-section">
+    <div class="container">
+        <div class="hero-content">
+            <h2>Welcome to Your Carbon Journey</h2>
+            <p class="hero-subtitle">Most of us feel disconnected from the big picture of climate change. This calculator helps you easily measure your personal carbon footprint and gives you personalized tips to reduce your impact.</p>
+            <a href="{% url 'calculator:calculator' %}" class="btn btn-primary btn-large">Start Your Journey</a>
+        </div>
+    </div>
+</div>
+
+<div class="info-section">
+    <div class="container">
+        <h2>Why Track Your Carbon Footprint?</h2>
+        <div class="info-grid">
+            <a href="{% url 'calculator:calculator' %}" class="info-card-link">
+                <div class="info-card">
+                    <div class="card-icon">📊</div>
+                    <h3>Measure Impact</h3>
+                    <p>Understand how your daily choices contribute to climate change with our simple calculator.</p>
+                </div>
+            </a>
+            <a href="{% url 'calculator:tips' %}" class="info-card-link">
+                <div class="info-card">
+                    <div class="card-icon">💡</div>
+                    <h3>Get Personalized Tips</h3>
+                    <p>Receive tailored recommendations to reduce your carbon footprint effectively.</p>
+                </div>
+            </a>
+            <a href="{% url 'calculator:calculator' %}" class="info-card-link">
+                <div class="info-card">
+                    <div class="card-icon">📈</div>
+                    <h3>Track Progress</h3>
+                    <p>Monitor your improvements over time and celebrate sustainable lifestyle changes.</p>
+                </div>
+            </a>
+            <a href="{% url 'calculator:about' %}" class="info-card-link">
+                <div class="info-card">
+                    <div class="card-icon">🌱</div>
+                    <h3>Build Habits</h3>
+                    <p>Transform confusion into clear, rewarding actions towards a sustainable future.</p>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="cta-section">
+    <div class="container">
+        <h2>Ready to Make a Difference?</h2>
+        <p>Join thousands of people tracking their carbon footprint and making sustainable choices.</p>
+        <div class="cta-buttons">
+            {% if user.is_authenticated %}
+                <a href="{% url 'calculator:calculator' %}" class="btn btn-primary btn-large">Calculate Now</a>
+            {% else %}
+                <a href="{% url 'calculator:signup' %}" class="btn btn-primary btn-large">Get Started</a>
+                <a href="{% url 'calculator:login' %}" class="btn btn-secondary btn-large">Sign In</a>
+            {% endif %}
+            <a href="{% url 'calculator:tips' %}" class="btn btn-secondary btn-large">Learn More</a>
+        </div>
+    </div>
+</div>
+
+<style>
+.cta-section {
+    padding: 80px 0;
+    background: linear-gradient(135deg, #2ecc71, #3498db);
+    color: white;
+    text-align: center;
+}
+
+.cta-section h2 {
+    font-size: 36px;
+    margin-bottom: 15px;
+    color: white;
+}
+
+.cta-section p {
+    font-size: 18px;
+    margin-bottom: 40px;
+    opacity: 0.95;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.cta-buttons .btn {
+    min-width: 200px;
+    background-color: #e74c3c !important;
+    color: white !important;
+    border: none !important;
+}
+
+.cta-buttons .btn:hover {
+    background-color: #c0392b !important;
+}
+
+.cta-buttons .btn-primary {
+    background-color: #e74c3c !important;
+}
+
+.cta-buttons .btn-primary:hover {
+    background-color: #c0392b !important;
+}
+
+.cta-buttons .btn-secondary {
+    background-color: #e74c3c !important;
+}
+
+.cta-buttons .btn-secondary:hover {
+    background-color: #c0392b !important;
+}
+
+.info-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: all 0.3s ease;
+}
+
+.info-card-link .info-card {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-top: 4px solid transparent;
+}
+
+.info-card-link:hover .info-card {
+    transform: translateY(-8px);
+    border-top-color: #e74c3c;
+    box-shadow: 0 12px 20px rgba(231, 76, 60, 0.2);
+}
+
+@media (max-width: 768px) {
+    .cta-section {
+        padding: 60px 0;
+    }
+
+    .cta-section h2 {
+        font-size: 28px;
+    }
+
+    .cta-section p {
+        font-size: 16px;
+    }
+
+    .cta-buttons {
+        flex-direction: column;
+    }
+
+    .cta-buttons .btn {
+        width: 100%;
+    }
+}
+</style>
+{% endblock %}

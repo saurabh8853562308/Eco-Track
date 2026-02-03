@@ -1,0 +1,372 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Login - Carbon Footprint Calculator{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h2>🔐 Login</h2>
+                <p>Welcome back! Calculate your carbon footprint</p>
+            </div>
+
+            {% if messages %}
+                <div class="alert-messages">
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {% for error in form.non_field_errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <form method="post" class="auth-form">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label>Login As</label>
+                    <div class="role-selection">
+                        {% for value, label in form.role.field.choices %}
+                        <label class="role-option">
+                            <input 
+                                type="radio" 
+                                name="role" 
+                                value="{{ value }}"
+                                {% if form.role.value == value %}checked{% endif %}
+                                class="role-input"
+                            >
+                            <span class="role-label">{{ label }}</span>
+                        </label>
+                        {% endfor %}
+                    </div>
+                    {% if form.role.errors %}
+                        <span class="error-text">{{ form.role.errors.0 }}</span>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_username">Username</label>
+                    <input 
+                        type="text" 
+                        id="id_username" 
+                        name="username" 
+                        class="form-control" 
+                        placeholder="Enter your username"
+                        required
+                    >
+                    {% if form.username.errors %}
+                        <span class="error-text">{{ form.username.errors.0 }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_password">Password</label>
+                    <input 
+                        type="password" 
+                        id="id_password" 
+                        name="password" 
+                        class="form-control" 
+                        placeholder="Enter your password"
+                        required
+                    >
+                    {% if form.password.errors %}
+                        <span class="error-text">{{ form.password.errors.0 }}</span>
+                    {% endif %}
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">
+                    Login
+                </button>
+            </form>
+
+            <div class="auth-divider">or</div>
+
+            <div class="auth-alternative">
+                <p>Don't have an account?</p>
+                <a href="{% url 'calculator:signup' %}" class="btn btn-secondary btn-block">
+                    Create Account
+                </a>
+            </div>
+
+            <div class="auth-footer">
+                <a href="{% url 'calculator:index' %}" class="link">← Back to Home</a>
+            </div>
+        </div>
+
+        <div class="auth-benefits">
+            <h3>🌱 Benefits of an Account</h3>
+            <ul>
+                <li>✅ Track your carbon footprint over time</li>
+                <li>✅ View your progress month by month</li>
+                <li>✅ Get personalized sustainability tips</li>
+                <li>✅ Export your data and reports</li>
+                <li>✅ Compare with community averages</li>
+                <li>✅ Set reduction goals</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<style>
+.auth-container {
+    background: linear-gradient(135deg, rgba(46, 204, 113, 0.1), rgba(52, 152, 219, 0.1));
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    margin-top: 80px;
+}
+
+.auth-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    max-width: 900px;
+    width: 100%;
+}
+
+.auth-card {
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.auth-header h2 {
+    font-size: 32px;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.auth-header p {
+    color: #7f8c8d;
+    font-size: 14px;
+}
+
+.auth-form {
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #34495e;
+    font-size: 14px;
+}
+
+.role-selection {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.role-option {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    background: #f8f9fa;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.role-option:hover {
+    border-color: #2ecc71;
+    background: #f0fdf4;
+}
+
+.role-input {
+    margin-right: 10px;
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+    accent-color: #2ecc71;
+}
+
+.role-label {
+    cursor: pointer;
+    color: #34495e;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #2ecc71;
+    box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.1);
+}
+
+.error-text {
+    display: block;
+    color: #e74c3c;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.alert-messages {
+    margin-bottom: 20px;
+}
+
+.alert {
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border-left: 4px solid;
+}
+
+.alert-danger {
+    background: #fadbd8;
+    color: #c0392b;
+    border-left-color: #e74c3c;
+}
+
+.alert-success {
+    background: #d5f4e6;
+    color: #27ae60;
+    border-left-color: #2ecc71;
+}
+
+.btn-block {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.auth-divider {
+    text-align: center;
+    margin: 30px 0;
+    color: #bdc3c7;
+    font-size: 14px;
+    position: relative;
+}
+
+.auth-divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #ecf0f1;
+}
+
+.auth-divider {
+    background: white;
+    padding: 0 10px;
+    width: fit-content;
+    margin: 30px auto;
+}
+
+.auth-alternative {
+    text-align: center;
+}
+
+.auth-alternative p {
+    color: #7f8c8d;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.auth-footer {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.link {
+    color: #3498db;
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.link:hover {
+    color: #2980b9;
+    text-decoration: underline;
+}
+
+.auth-benefits {
+    background: linear-gradient(135deg, #f8f9fa, white);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.auth-benefits h3 {
+    font-size: 24px;
+    color: #2c3e50;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.auth-benefits ul {
+    list-style: none;
+}
+
+.auth-benefits li {
+    padding: 12px 0;
+    color: #34495e;
+    font-size: 15px;
+    border-bottom: 1px solid #ecf0f1;
+    line-height: 1.6;
+}
+
+.auth-benefits li:last-child {
+    border-bottom: none;
+}
+
+@media (max-width: 768px) {
+    .auth-wrapper {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .auth-card {
+        padding: 30px;
+    }
+
+    .auth-benefits {
+        padding: 30px;
+    }
+
+    .auth-header h2 {
+        font-size: 24px;
+    }
+
+    .auth-container {
+        margin-top: 60px;
+    }
+}
+</style>
+{% endblock %}
